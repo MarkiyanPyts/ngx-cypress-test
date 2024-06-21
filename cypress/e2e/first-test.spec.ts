@@ -52,7 +52,31 @@ describe('First Test Suite', () => {
 
         // cypress chains and DOM
         cy.get('#inputEmail3').parents('form').find('button').should('contain', 'Sign in')
-            .parents('form').find('nb-checkbox').click()
-        
+            .parents('form').find('nb-checkbox').click()  
     })
+
+    //it.only() - only run this test
+    it.only('save subject of the command', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
+
+        cy.contains('nb-card', 'Using the Grid').find('[for="inputEmail1"]').should('contain', 'Email')
+        cy.contains('nb-card', 'Using the Grid').find('[for="inputPassword2"]').should('contain', 'Password')
+
+        // CANT Do Things Like This
+        // const usingTheGrid = cy.contains('nb-card', 'Using the Grid')
+        // usingTheGrid.find('[for="inputEmail1"]').should('contain', 'Email')
+        // usingTheGrid.find('[for="inputPassword2"]').should('contain', 'Password')
+
+        // 1 Cypress Alias
+        cy.contains('nb-card', 'Using the Grid').as('usingTheGrid')
+        cy.get('@usingTheGrid').find('[for="inputEmail1"]').should('contain', 'Email')
+        cy.get('@usingTheGrid').find('[for="inputPassword2"]').should('contain', 'Password')
+
+        // 2 Cypress then() methods
+
+    })
+
+
 })
