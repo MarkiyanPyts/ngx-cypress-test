@@ -75,7 +75,10 @@ describe('First Test Suite', () => {
         cy.get('@usingTheGrid').find('[for="inputPassword2"]').should('contain', 'Password')
 
         // 2 Cypress then() methods
-
+        cy.contains('nb-card', 'Using the Grid').then(usingTheGridForm => {
+            cy.wrap(usingTheGridForm).find('[for="inputEmail1"]').should('contain', 'Email')
+            cy.wrap(usingTheGridForm).find('[for="inputPassword2"]').should('contain', 'Password')
+        })
     })
 
 
