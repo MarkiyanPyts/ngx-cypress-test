@@ -55,8 +55,8 @@ describe('First Test Suite', () => {
             .parents('form').find('nb-checkbox').click()  
     })
 
-    //it.only() - only run this test
-    it.only('save subject of the command', () => {
+
+    it('save subject of the command', () => {
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains('Form Layouts').click()
@@ -81,5 +81,60 @@ describe('First Test Suite', () => {
         })
     })
 
+        //it.only() - only run this test
+    it('extracts text values', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
 
+        // 1
+        cy.get('[for="exampleInputEmail1"]').should('contain', 'Email address')
+
+        // 2
+        cy.get('[for="exampleInputEmail1"]').then(label => {
+            const labelText = label.text()
+            expect(labelText).to.equal('Email address')
+        })
+
+        // 3 pure text value
+        cy.get('[for="exampleInputEmail1"]').invoke('text').then(text => {
+            expect(text).to.equal('Email address')
+        })
+
+        cy.get('[for="exampleInputEmail1"]').invoke('text').as('labelText').should('contain', 'Email address')
+
+        // 4
+        cy.get('[for="exampleInputEmail1"]').invoke('attr', 'class').then(classValue => {
+            expect(classValue).to.equal('label')
+        })
+
+        // 5 invoke property
+        cy.get('#exampleInputEmail1').type('test@test.com') // types text into the input
+        cy.get('#exampleInputEmail1').invoke('prop', 'value').should('contain', 'test@test.com').then(property => {
+            expect(property).to.equal('test@test.com')
+        })
+    }) 
+
+    it('radio buttons', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click()
+
+        cy.contains('nb-card', 'Using the Grid').find('[type="radio"]').then(radioButtons => {
+            cy.wrap(radioButtons).eq(0).check({force: true}).should('be.checked')//{force: true} makes selector work even if it is not visible
+            cy.wrap(radioButtons).eq(1).check({force: true})
+            cy.wrap(radioButtons).eq(0).should('not.be.checked')
+            cy.wrap(radioButtons).eq(2).should('be.disabled')
+        })
+    })
+
+    it.only('checkboxes', () => {
+        cy.visit('/')
+        cy.contains('Modal & Overlays').click()
+        cy.contains('Toastr').click()
+
+        //cy.get('[type="checkbox"]').check({force: true})
+        //cy.get('[type="checkbox"]').uncheck({force: true})
+        cy.get('[type="checkbox"]').eq(0).click({force: true})
+    })
 })
