@@ -35,3 +35,10 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('openHomePage', () => { 
+    cy.visit('/')
+ })
+
+ //Argument of type '"openHomePage"' is not assignable to parameter of type 'keyof Chainable<any>'.
+ 
